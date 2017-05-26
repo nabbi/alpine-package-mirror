@@ -1,16 +1,45 @@
 
-BUILD_ID ?= ${USER}
-REGISTRY ?= ""
+include env_make
 
+NS        = bodsch
+VERSION  ?= latest
 
-.PHONY: build_mirror
+REPO     = alpine-package
+NAME     = alpine-package
+INSTANCE = default
+
+.PHONY: build_mirror build_repo run
+
 build_mirror:
-	docker build -t ${REGISTRY}alpine-package-mirror:${BUILD_ID} .
-	@echo Image tag: ${REGISTRY}alpine-package-mirror:${BUILD_ID}
+	docker build -t $(NS)/$(NAME)-mirror:$(VERSION) .
+	@echo Image tag: $(NS)/$(NAME)-mirror:$(VERSION)
 
-.PHONY: build_repo
 build_repo:
-	docker build -t ${REGISTRY}alpine-package-data:${BUILD_ID} repo/
-	@echo Image tag: ${REGISTRY}alpine-package-data:${BUILD_ID}
+	docker build -t $(NS)/$(NAME)-data:$(VERSION) repo/
+	@echo Image tag: $(NS)/$(NAME)-data:$(VERSION)
+
+run:
+	docker run \
+		--rm \
+		--interactive \
+		--tty \
+		--name $(NAME)-data \
+		$(NS)/$(NAME)-mirror:$(VERSION)
+
+exec:
+	docker exec \
+		--interactive \
+		--tty \
+		$(NAME)-$(INSTANCE) \
+		/bin/sh
+
+start:
+	docker run \
+		--detach \
+		--name $(NAME)-$(INSTANCE) \
+		$(PORTS) \
+		$(VOLUMES) \
+		$(ENV) \
+		$(NS)/$(REPO):$(VERSION)
 
 build: build_repo build_mirror
