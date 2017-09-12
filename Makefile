@@ -8,7 +8,7 @@ REPO     = alpine-package
 NAME     = alpine-package
 INSTANCE = default
 
-.PHONY: build_mirror build_repo run
+.PHONY: build_mirror build_repo clean run exec start
 
 build_mirror:
 	docker build -t $(NS)/$(NAME)-mirror:$(VERSION) .
@@ -17,6 +17,14 @@ build_mirror:
 build_repo:
 	docker build -t $(NS)/$(NAME)-data:$(VERSION) repo/
 	@echo Image tag: $(NS)/$(NAME)-data:$(VERSION)
+
+clean:
+	docker rmi \
+		--force \
+		$(NS)/$(NAME)-mirror:$(VERSION)
+	docker rmi \
+		--force \
+		$(NS)/$(NAME)-data:$(VERSION)
 
 run:
 	docker run \
