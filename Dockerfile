@@ -4,8 +4,8 @@ FROM    alpine:latest
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
 ENV \
-  ALPINE_MIRROR="mirror1.hs-esslingen.de/pub/Mirrors" \
-  ALPINE_VERSION="v3.6"
+  ALPINE_MIRROR="dl-cdn.alpinelinux.org" \
+  ALPINE_VERSION="v3.17"
 
 EXPOSE  80
 

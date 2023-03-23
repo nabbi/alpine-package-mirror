@@ -1,7 +1,7 @@
 
 include env_make
 
-NS        = bodsch
+NS        = nabbi
 VERSION  ?= latest
 
 REPO     = alpine-package

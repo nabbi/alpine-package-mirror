@@ -1,7 +1,7 @@
 #
 # Run rsync to periodically update package data, and share it as a volume
 #
-FROM    alpine:3.2
+FROM    alpine:latest
 MAINTAINER  Daniel Nephin <dnephin@gmail.com>
 
 RUN     apk update && apk add rsync
